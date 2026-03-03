@@ -2,6 +2,11 @@ import os.path
 from datetime import timedelta
 from pathlib import Path
 import environ
+from corsheaders.defaults import default_headers
+
+CORS_ALLOW_HEADERS = list(default_headers) + [
+    "accept-encoding",
+]
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 env = environ.Env(
@@ -21,7 +26,7 @@ SECRET_KEY = env("SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["django-backend-8bva.onrender.com"]
+ALLOWED_HOSTS = ["django-backend-8bva.onrender.com", ".onrender.com"]
 CSRF_TRUSTED_ORIGINS = [
     "https://django-backend-8bva.onrender.com",
     "https://frontend-app-z580.onrender.com"
