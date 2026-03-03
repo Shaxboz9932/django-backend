@@ -195,7 +195,7 @@ CORS_ALLOW_METHODS = (
 
 STRIPE_SECRET_KEY = env("STRIPE_SECRET_KEY")
 STRIPE_VERSION = "2024-06-20"
-STRIPE_WEBHOOK_SECRET = "whsec_wRNftLajMZNeslQOP6vEPm4iVx5NlZ6z"
+STRIPE_WEBHOOK_SECRET = env("STRIPE_WEBHOOK_SECRET")
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 # EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
