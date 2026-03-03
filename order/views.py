@@ -66,9 +66,7 @@ class OrderListOrCreateAPIView(APIView):
                     'client_reference_id': str(order.id),
                     "success_url": success_url,
                     "cancel_url": cancel_url,
-                    metadata={
-                        "order_id": order.id  # Buyurtma ID-sini shu yerda yuboring
-                    },
+                    "metadata": {"order_id": order.id},
                     'line_items': []
                 }
 
