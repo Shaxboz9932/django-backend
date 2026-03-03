@@ -58,8 +58,8 @@ class OrderListOrCreateAPIView(APIView):
                 ]
                 OrderItem.objects.bulk_create(order_items) # Tezroq ishlashi uchun bulk_create
 
-                success_url = request.build_absolute_uri(reverse('order:completed'))
-                cancel_url = request.build_absolute_uri(reverse('order:canceled'))
+                success_url = "https://frontend-app-z580.onrender.com"
+                cancel_url = "https://frontend-app-z580.onrender.com"
 
                 session_data = {
                     "mode": "payment",
