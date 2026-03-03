@@ -66,7 +66,7 @@ class OrderListOrCreateAPIView(APIView):
                     'client_reference_id': str(order.id),
                     "success_url": success_url,
                     "cancel_url": cancel_url,
-                    "metadata": {"order_id": order.id},
+                    "metadata": {"order_id": order.id, "user_id": request.user.id},
                     'line_items': []
                 }
 
@@ -133,11 +133,13 @@ def stripe_webhook(request):
 
         # Checkout yaratishda yuborilgan order_id ni metadatadan olamiz
         order_id = session.get('metadata', {}).get('order_id')
+        user_id = session.get('metadata', {}).get('user_id')
 
         if order_id:
             try:
                 order = Order.objects.get(id=order_id)
-                order.is_paid = True
+                CartItem.objects.filter(user=user_id).delete()
+                order.paid = True
                 # Stripe bergan session ID ni ham saqlab qo'yish yaxshi amaliyot
                 order.stripe_session_id = session.get('id')
                 order.save()
