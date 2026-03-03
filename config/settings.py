@@ -2,6 +2,7 @@ import os.path
 from datetime import timedelta
 from pathlib import Path
 import environ
+
 from corsheaders.defaults import default_headers
 
 CORS_ALLOW_HEADERS = list(default_headers) + [
@@ -220,9 +221,10 @@ EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 CACHES = {
     "default": {
         "BACKEND": "django.core.cache.backends.redis.RedisCache",
-        "LOCATION": "redis://red-d6jh8rf5r7bs73f2h1r0:6379",
+        "LOCATION": "redis://red-d6ji9p0gjchc73at29ug:6379",
     }
 }
+
 
 SESSION_COOKIE_SAMESITE = 'None'
 SESSION_COOKIE_SECURE = True
