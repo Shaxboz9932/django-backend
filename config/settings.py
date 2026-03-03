@@ -22,7 +22,10 @@ SECRET_KEY = env("SECRET_KEY")
 DEBUG = True
 
 ALLOWED_HOSTS = ["django-backend-8bva.onrender.com"]
-CSRF_TRUSTED_ORIGINS = ["https://django-backend-8bva.onrender.com"]
+CSRF_TRUSTED_ORIGINS = [
+    "https://django-backend-8bva.onrender.com",
+    "https://frontend-app-z580.onrender.com"
+]
 
 # Application definition
 
