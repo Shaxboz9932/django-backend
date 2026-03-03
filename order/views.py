@@ -66,6 +66,9 @@ class OrderListOrCreateAPIView(APIView):
                     'client_reference_id': str(order.id),
                     "success_url": success_url,
                     "cancel_url": cancel_url,
+                    metadata={
+                        "order_id": order.id  # Buyurtma ID-sini shu yerda yuboring
+                    },
                     'line_items': []
                 }
 
@@ -96,6 +99,57 @@ class OrderListOrCreateAPIView(APIView):
         
         except Exception as e:
             return Response({"detail": str(e)}, status=400)
+            
+import stripe
+from django.conf import settings
+from django.http import HttpResponse
+from django.views.decorators.csrf import csrf_exempt
+from .models import Order
+
+# Stripe API kalitini o'rnatish
+stripe.api_key = settings.STRIPE_SECRET_KEY
+
+@csrf_exempt
+def stripe_webhook(request):
+    payload = request.body
+    sig_header = request.META.get('HTTP_STRIPE_SIGNATURE')
+    endpoint_secret = settings.STRIPE_WEBHOOK_SECRET  # Stripe Dashboarddan olinadi
+
+    event = None
+
+    try:
+        # Signal haqiqiyligini tekshirish
+        event = stripe.Webhook.construct_event(
+            payload, sig_header, endpoint_secret
+        )
+    except ValueError as e:
+        # Noto'g'ri payload
+        return HttpResponse(status=400)
+    except stripe.error.SignatureVerificationError as e:
+        # Noto'g'ri imzo
+        return HttpResponse(status=400)
+
+    # To'lov muvaffaqiyatli yakunlanganda ishlaydigan mantiq
+    if event['type'] == 'checkout.session.completed':
+        session = event['data']['object']
+
+        # Checkout yaratishda yuborilgan order_id ni metadatadan olamiz
+        order_id = session.get('metadata', {}).get('order_id')
+
+        if order_id:
+            try:
+                order = Order.objects.get(id=order_id)
+                order.is_paid = True
+                # Stripe bergan session ID ni ham saqlab qo'yish yaxshi amaliyot
+                order.stripe_session_id = session.get('id')
+                order.save()
+                print(f"Buyurtma {order_id} muvaffaqiyatli to'landi.")
+            except Order.DoesNotExist:
+                print(f"Xato: Buyurtma {order_id} topilmadi.")
+
+    return HttpResponse(status=200)        
+            
+    
 
 def payment_process(request, pk):
 
@@ -134,3 +188,6 @@ def payment_completed(request):
 
 def payment_canceled(request):
     return render(request, 'canceled.html')
+    
+    
+

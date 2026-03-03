@@ -8,6 +8,8 @@ urlpatterns = [
 
     path("process/<int:pk>/", views.payment_process, name="process"),
     path("completed/", views.payment_completed, name="completed"),
-    path("canceled/", views.payment_canceled, name="canceled")
+    path("canceled/", views.payment_canceled, name="canceled"),
+    
+    path('webhooks/stripe/', stripe_webhook, name='stripe-webhook'),
 
 ]
