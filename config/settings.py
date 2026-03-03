@@ -21,8 +21,8 @@ SECRET_KEY = env("SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["e-commerce-backend-96qo.onrender.com"]
-CSRF_TRUSTED_ORIGINS = ["https://e-commerce-backend-96qo.onrender.com"]
+ALLOWED_HOSTS = ["django-backend-8bva.onrender.com"]
+CSRF_TRUSTED_ORIGINS = ["https://django-backend-8bva.onrender.com"]
 
 # Application definition
 
