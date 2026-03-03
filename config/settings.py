@@ -178,7 +178,7 @@ MEDIA_URL = "/media/"
 MEDIA_ROOT = BASE_DIR / "media"
 
 CORS_ALLOWED_ORIGINS = [
-    "https://e-commerce-frontend-z0gt.onrender.com",
+    "https://frontend-app-z580.onrender.com",
     "http://localhost:5173",
     "http://localhost:3000",
 ]
