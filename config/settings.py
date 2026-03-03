@@ -207,3 +207,10 @@ EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 # EMAIL_HOST_USER = 'shaxboz9932@gmail.com'
 # EMAIL_HOST_PASSWORD = 'fakechrapdhbwxgw'
 # DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+
+CACHES = {
+    "default": {
+        "BACKEND": "django.core.cache.backends.redis.RedisCache",
+        "LOCATION": "redis://red-d6jh8rf5r7bs73f2h1r0:6379",
+    }
+}
