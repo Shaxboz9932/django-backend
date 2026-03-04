@@ -29,9 +29,14 @@ urlpatterns = [
     path("cart/", include("cart.urls")),
     path("wishlist/", include("wishlist.urls")),
     path("order/", include("order.urls")),
-    path("__debug__/", include("debug_toolbar.urls")),
 ] + debug_toolbar_urls()
 
 
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    
+if settings.DEBUG:
+    import debug_toolbar
+    urlpatterns = [
+        path('__debug__/', include(debug_toolbar.urls)),
+    ] + urlpatterns
