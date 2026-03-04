@@ -230,3 +230,16 @@ SESSION_COOKIE_SAMESITE = 'None'
 SESSION_COOKIE_SECURE = True
 CSRF_COOKIE_SAMESITE = 'None'
 CSRF_COOKIE_SECURE = True
+
+# Celery Configure
+
+import os
+
+# Render'dagi Environment Variable'dan olinadi
+CELERY_BROKER_URL = "redis://red-d6ji9p0gjchc73at29ug:6379",
+CELERY_RESULT_BACKEND = "redis://red-d6ji9p0gjchc73at29ug:6379",
+
+# Boshqa muhim sozlamalar
+CELERY_ACCEPT_CONTENT = ['json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'

@@ -12,6 +12,7 @@ from cart.models import CartItem
 from rest_framework.views import APIView
 from order.serializers import OrderSerializer
 import stripe
+from .tasks import send_order_confirmation_email
 
 stripe.api_key = settings.STRIPE_SECRET_KEY
 stripe.api_version = settings.STRIPE_VERSION
@@ -84,13 +85,9 @@ class OrderListOrCreateAPIView(APIView):
 
                 session = stripe.checkout.Session.create(**session_data)
 
-                send_mail(
-                    subject="Order Created",
-                    message=f"Your order has been created successfully. Your order id: {order.id}",
-                    from_email=settings.EMAIL_HOST_USER,
-                    recipient_list=[request.data.get("email")],
-                    fail_silently=False,
-                    html_message=render_to_string("email.html", {"order": order})
+                send_order_confirmation_email.delay(
+                    order.id,
+                    request.data.get("email")
                 )
 
                 return Response({"order_id": order.id, "url": session.url}, status=201)
