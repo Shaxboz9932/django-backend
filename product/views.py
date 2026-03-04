@@ -25,7 +25,7 @@ class GetProductsAPIView(APIView):
     filterset_class = ProductFilter
 
     def get(self, request):
-        queryset = Product.objects.all()
+        queryset = Product.objects.select_related("category", "brand").prefetch_related("images").all()
 
         # filter
         filter_backend = DjangoFilterBackend()
@@ -42,9 +42,9 @@ class GetProductsAPIView(APIView):
         elif order == '-price':
             queryset = queryset.corder_by('-price')
 
-        total_count = queryset.count()
+        # total_count = queryset.count()
 
-        if total_count == 0:
+        if queryset.count() == 0:
             return Response({
                 'detail': "Empty page",
                 'results': []
@@ -69,7 +69,7 @@ class GetProductsAPIView(APIView):
         base_url = request.build_absolute_uri(request.path)
 
         return Response({
-            "count": total_count,
+            "count": queryset.count(),
             "page": int(page_number),
             "next": page_obj.has_next(),
             "previous": page_obj.has_previous(),
