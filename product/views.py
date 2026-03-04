@@ -45,7 +45,7 @@ class GetProductsAPIView(APIView):
 
         paginator = Paginator(queryset, 8)
         
-        total_count = paginator.count()
+        total_count = int(paginator.count())
 
         if total_count == 0:
             return Response({
