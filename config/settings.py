@@ -236,8 +236,8 @@ CSRF_COOKIE_SECURE = True
 import os
 
 # Render'dagi Environment Variable'dan olinadi
-CELERY_BROKER_URL = "redis://red-d6ji9p0gjchc73at29ug:6379",
-CELERY_RESULT_BACKEND = "redis://red-d6ji9p0gjchc73at29ug:6379",
+CELERY_BROKER_URL = "redis://red-d6ji9p0gjchc73at29ug:6379"
+CELERY_RESULT_BACKEND = "redis://red-d6ji9p0gjchc73at29ug:6379"
 
 # Boshqa muhim sozlamalar
 CELERY_ACCEPT_CONTENT = ['json']
