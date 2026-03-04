@@ -42,9 +42,9 @@ class GetProductsAPIView(APIView):
         elif order == '-price':
             queryset = queryset.corder_by('-price')
 
-        # total_count = queryset.count()
+        total_count = queryset.count()
 
-        if queryset.count() == 0:
+        if total_count == 0:
             return Response({
                 'detail': "Empty page",
                 'results': []
@@ -69,7 +69,7 @@ class GetProductsAPIView(APIView):
         base_url = request.build_absolute_uri(request.path)
 
         return Response({
-            "count": queryset.count(),
+            "count": total_count,
             "page": int(page_number),
             "next": page_obj.has_next(),
             "previous": page_obj.has_previous(),
