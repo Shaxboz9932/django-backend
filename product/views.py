@@ -45,7 +45,7 @@ class GetProductsAPIView(APIView):
 
         paginator = Paginator(queryset, 8)
         
-        total_count = int(paginator.count())
+        total_count = paginator.count()
 
         if total_count == 0:
             return Response({
@@ -53,7 +53,7 @@ class GetProductsAPIView(APIView):
                 'results': []
             }, status=status.HTTP_200_OK)
         
-        page_number = request.GET.get("page", 1) # default holatda 1
+        page_number = int(request.GET.get("page", 1)) # default holatda 1
         page_range = []
         try:
             page_obj = paginator.page(page_number)
