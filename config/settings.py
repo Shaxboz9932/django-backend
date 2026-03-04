@@ -60,6 +60,13 @@ INSTALLED_APPS = [
     "debug_toolbar",
 ]
 
+def show_toolbar(request):
+    return True  # Hamma uchun ko'rinadigan qiladi (Xavfli!)
+
+DEBUG_TOOLBAR_CONFIG = {
+    "SHOW_TOOLBAR_CALLBACK": show_toolbar,
+}
+
 MIDDLEWARE = [
     "corsheaders.middleware.CorsMiddleware",
     'django.middleware.security.SecurityMiddleware',
