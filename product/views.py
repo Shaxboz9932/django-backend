@@ -4,7 +4,7 @@ from rest_framework import status
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework.views import APIView
-
+from django.db.models import Count, Avg
 from product.filters import ProductFilter
 from product.models import Product, Category, Brand
 from product.permissions import IsAdminForPost, IsAdminForPatch, IsAdminForDelete
@@ -25,7 +25,10 @@ class GetProductsAPIView(APIView):
     filterset_class = ProductFilter
 
     def get(self, request):
-        queryset = Product.objects.select_related("category", "brand").prefetch_related("images").all()
+        queryset = Product.objects.prefetch_related("images").annotate(
+            rating_awg=Avg("reviews__rating", default=0.0),
+            reviews_count=Count("reviews")
+        ).all()
 
         # filter
         filter_backend = DjangoFilterBackend()
@@ -41,14 +44,6 @@ class GetProductsAPIView(APIView):
             queryset = queryset.order_by('price')
         elif order == '-price':
             queryset = queryset.corder_by('-price')
-
-        total_count = queryset.count()
-
-        if total_count == 0:
-            return Response({
-                'detail': "Empty page",
-                'results': []
-            }, status=status.HTTP_200_OK)
 
 
         paginator = Paginator(queryset, 8)
@@ -69,7 +64,7 @@ class GetProductsAPIView(APIView):
         base_url = request.build_absolute_uri(request.path)
 
         return Response({
-            "count": total_count,
+            "count": paginator.count,
             "page": int(page_number),
             "next": page_obj.has_next(),
             "previous": page_obj.has_previous(),

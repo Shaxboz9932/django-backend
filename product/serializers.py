@@ -13,8 +13,8 @@ class ProductImageSerializer(serializers.ModelSerializer):
 
 
 class ProductSerializer(serializers.ModelSerializer):
-    avg_rating = serializers.SerializerMethodField()
-    rating_count = serializers.SerializerMethodField()
+    avg_rating = serializers.FloatField(source="rating_awg", read_only=True)
+    rating_count = serializers.IntegerField(source="reviews_count", read_only=True)
     created = serializers.DateTimeField(read_only=True)
     updated = serializers.DateTimeField(read_only=True)
     # category = serializers.SerializerMethodField()
@@ -25,13 +25,6 @@ class ProductSerializer(serializers.ModelSerializer):
         child=serializers.ImageField(max_length=1000),
         write_only=True
     )
-
-    def get_avg_rating(self, obj):
-        avg_rating = Review.objects.filter(product=obj.id).aggregate(Avg("rating", default=0))
-        return avg_rating.get("rating__avg")
-
-    def get_rating_count(self, obj):
-        return Review.objects.filter(product=obj.id).count()
 
     class Meta:
         model = Product

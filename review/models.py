@@ -16,7 +16,7 @@ class Review(models.Model):
     comment = models.TextField()
     status = models.CharField(choices=STATUS, max_length=20, default=STATUS["WAITING"])
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name="reviews")
     created_at = models.DateTimeField(auto_now=True)
     update_at = models.DateTimeField(auto_now_add=True)
     image = models.ImageField(upload_to="user_comment_image/", null=True, blank=True)
